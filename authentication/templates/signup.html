@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - WebMonitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Background Styling */
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Signup Box */
+        .signup-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #fff;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Enhanced Title */
+        .signup-container h3 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        /* Floating Label Inputs */
+        .form-floating .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .form-floating label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Signup Button */
+        .signup-btn {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(255, 118, 136, 0.3);
+        }
+
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #ff6a88, #ff758c);
+            box-shadow: 0 6px 14px rgba(255, 118, 136, 0.5);
+        }
+
+        /* Login Redirect Link */
+        .auth-links {
+            margin-top: 15px;
+        }
+
+        .auth-links a {
+            color: #ff7eb3;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .auth-links a:hover {
+            color: #ff6a88;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 576px) {
+            .signup-container {
+                padding: 30px;
+                max-width: 100%;
+            }
+            .signup-btn {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <h3>Create an Account</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            <input type="text" id="username" class="form-control" name="username" required>
+            <label for="username">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="email" id="email" class="form-control" name="email" required>
+            <label for="email">Email</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" id="phone" class="form-control" name="phone_number" required>
+            <label for="phone">Phone Number</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" id="address" class="form-control" name="address" required>
+            <label for="address">Address</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" id="city" class="form-control" name="city" required>
+            <label for="city">City</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" id="country" class="form-control" name="country" required>
+            <label for="country">Country</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" id="password" class="form-control" name="password" required>
+            <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn signup-btn">Sign Up</button>
+    </form>
+
+    <div class="auth-links">
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

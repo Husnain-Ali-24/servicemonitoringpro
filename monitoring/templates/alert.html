@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebMonitor - Alerts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 text-white flex flex-col md:flex-row justify-between items-center shadow-md">
+        <span class="text-2xl font-bold mb-4 md:mb-0">WebMonitor</span>
+        <div class="flex flex-wrap justify-center gap-3">
+            <a href="#" class="px-4 py-2 rounded hover:bg-blue-500 transition">Dashboard</a>
+            <a href="#" class="px-4 py-2 rounded bg-blue-700">Alerts</a>
+            <a href="#" class="px-4 py-2 rounded hover:bg-blue-500 transition">Settings</a>
+            <a href="#" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto mt-10 p-6 flex-grow w-full">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Website Alerts</h2>
+
+        <!-- Filter Alerts -->
+        <div class="flex justify-center gap-3 mb-6">
+            <button onclick="filterAlerts('all')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">All</button>
+            <button onclick="filterAlerts('unread')" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-700">Unread</button>
+            <button onclick="filterAlerts('read')" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700">Read</button>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <ul id="alerts-list">
+                <!-- Example Alerts -->
+                <li class="border-l-4 border-red-500 p-4 mb-4 bg-gray-100 rounded-md alert unread">
+                    <p class="font-semibold text-lg">example.com <span class="text-red-600">(DOWN)</span></p>
+                    <p class="text-gray-500 text-sm">Time: 2025-02-20 12:30 PM</p>
+                    <p class="text-gray-600 mt-1">Your website is down. Please check your server.</p>
+                    <div class="mt-3 flex gap-3">
+                        <button onclick="markAsRead(this)" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700">Mark as Read</button>
+                        <button onclick="clearAlert(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700">Clear</button>
+                    </div>
+                </li>
+
+                <li class="border-l-4 border-green-500 p-4 mb-4 bg-gray-100 rounded-md alert unread">
+                    <p class="font-semibold text-lg">example.com <span class="text-green-600">(UP)</span></p>
+                    <p class="text-gray-500 text-sm">Time: 2025-02-20 01:00 PM</p>
+                    <p class="text-gray-600 mt-1">Your website is back online.</p>
+                    <div class="mt-3 flex gap-3">
+                        <button onclick="markAsRead(this)" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700">Mark as Read</button>
+                        <button onclick="clearAlert(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700">Clear</button>
+                    </div>
+                </li>
+
+                <li class="border-l-4 border-red-500 p-4 mb-4 bg-gray-100 rounded-md alert unread">
+                    <p class="font-semibold text-lg">mywebsite.com <span class="text-red-600">(DOWN)</span></p>
+                    <p class="text-gray-500 text-sm">Time: 2025-02-19 11:45 AM</p>
+                    <p class="text-gray-600 mt-1">Detected downtime on your website.</p>
+                    <div class="mt-3 flex gap-3">
+                        <button onclick="markAsRead(this)" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700">Mark as Read</button>
+                        <button onclick="clearAlert(this)" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700">Clear</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white text-center p-4 shadow-md mt-auto">
+        © 2025 WebMonitor - All Rights Reserved
+    </footer>
+
+    <script>
+        function markAsRead(button) {
+            let alertBox = button.closest(".alert");
+            alertBox.classList.remove("unread");
+            alertBox.classList.add("read");
+            alertBox.style.opacity = "0.7";
+            button.remove();
+        }
+
+        function clearAlert(button) {
+            let alertBox = button.closest(".alert");
+            alertBox.remove();
+        }
+
+        function filterAlerts(type) {
+            let alerts = document.querySelectorAll(".alert");
+            alerts.forEach(alert => {
+                if (type === 'all') {
+                    alert.style.display = "block";
+                } else if (type === 'unread' && alert.classList.contains("unread")) {
+                    alert.style.display = "block";
+                } else if (type === 'read' && alert.classList.contains("read")) {
+                    alert.style.display = "block";
+                } else {
+                    alert.style.display = "none";
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
