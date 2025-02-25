@@ -3,6 +3,8 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Website
+from alert.models import Alert
+from django.utils import timezone
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,7 +18,7 @@ def check_website_status():
         try:
             logger.info(f"Checking {website.url}")  # Debugging line
             response = requests.get(website.url, timeout=5)
-            new_status = "UP" if response.status_code < 400 else "DOWN"
+            new_status = "UP" if 200 <= response.status_code < 300 else "DOWN"
         except requests.RequestException as e:
             logger.error(f"Error checking {website.url}: {e}")  # Debugging line
             new_status = "DOWN"
@@ -26,6 +28,10 @@ def check_website_status():
         if website.status != new_status and new_status == "DOWN":
             
             send_alert_email(website.url,website.user.email)
+            alert_messages(website.url,website.user,new_status)
+
+        if website.status != new_status and new_status == "UP":
+            alert_messages_up(website.url,website.user,new_status)
 
         # Update status in the database
         website.status = new_status
@@ -34,6 +40,25 @@ def check_website_status():
 
     return "Website Status Checked"
 
+def alert_messages(website_url,website_user,new_status):
+    alert=Alert.objects.create(
+        user=website_user,
+        url=website_url,
+        status=new_status,
+        message="Your website is down.",
+        is_read=False
+    )
+    alert.save()
+
+def alert_messages_up(website_url,website_user,new_status):
+    alert=Alert.objects.create(
+        user=website_user,
+        url=website_url,
+        status=new_status,
+        message="Your website is Up Again.",
+        is_read=False
+    )
+    alert.save()
 def send_alert_email(website_url,email):
     subject = "⚠️ Website Down Alert"
     message = f"The website {website_url} is currently DOWN. Please check it immediately!"

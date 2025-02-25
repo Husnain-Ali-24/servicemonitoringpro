@@ -55,6 +55,3 @@ def logout_view(request):
     logout(request)
     return redirect("dashboard")
 
-
-def Alerting(request):
-    return render(request,"alert.html")

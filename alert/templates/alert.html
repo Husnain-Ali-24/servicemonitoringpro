@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebMonitor - Alerts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 text-white flex flex-col md:flex-row justify-between items-center shadow-md">
+        <span class="text-2xl font-bold mb-4 md:mb-0">WebMonitor</span>
+        <div class="flex flex-wrap justify-center gap-3">
+            <a href="{% url 'dashboard' userId %}" class="px-4 py-2 rounded hover:bg-blue-500 transition">Dashboard</a>
+            <a href="#" class="px-4 py-2 rounded bg-blue-700">Alerts</a>
+            <a href="#" class="px-4 py-2 rounded hover:bg-blue-500 transition">Settings</a>
+            <a href="#" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto mt-10 p-6 flex-grow w-full">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Website Alerts</h2>
+
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            {% if alerts %}
+            <ul id="alerts-list">
+                {% for alert in alerts %}
+                <li class="border-l-4 {% if alert.status == 'DOWN' %}border-red-500{% else %}border-green-500{% endif %} p-4 mb-4 bg-gray-100 rounded-md alert {% if not alert.is_read %}unread{% else %}read{% endif %}">
+                    <p class="font-semibold text-lg">{{ alert.url }} 
+                        <span class="text-{% if alert.status == 'DOWN' %}red-600{% else %}green-600{% endif %}">
+                            ({{ alert.status }})
+                        </span>
+                    </p>
+                    <p class="text-gray-500 text-sm">Time: {{ alert.timestamp }}</p>
+                    <p class="text-gray-600 mt-1">{{ alert.message }}</p>
+                    <div class="mt-3 flex gap-3">
+                        {% if not alert.is_read %}
+                            <button onclick="markAsRead(this, {{ alert.id }})" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700">Mark as Read</button>
+                        {% endif  %}
+                        <button onclick="clearAlert(this, {{ alert.id }})" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700">Clear</button>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-center text-gray-500">No alerts available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white text-center p-4 shadow-md mt-auto">
+        &copy; 2025 WebMonitor - All Rights Reserved
+    </footer>
+
+    <script>
+        function getCSRFToken() {
+            let tokenInput = document.querySelector("input[name='csrfmiddlewaretoken']");
+            return tokenInput ? tokenInput.value : '';
+        }
+        
+        function markAsRead(button, alertId) {
+            fetch(`/alert/mark-as-read/${alertId}/`, { 
+                method: 'POST', 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() 
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    let alertBox = button.closest(".alert");
+                    alertBox.classList.remove("unread");
+                    alertBox.classList.add("read");
+                    alertBox.style.opacity = "0.7";
+                    button.remove();
+                } else {
+                    alert("Error marking as read.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+        
+        function clearAlert(button, alertId) {
+            fetch(`/alert/clear-alert/${alertId}/`, { 
+                method: 'POST', 
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() 
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    let alertBox = button.closest(".alert");
+                    alertBox.remove();
+                } else {
+                    alert("Error deleting alert.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
