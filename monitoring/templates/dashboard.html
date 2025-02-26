@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebMonitor - Dashboard</title>
+    <title>ServiceMonitor - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
     
     <!-- Navbar -->
     <nav class="bg-blue-600 p-4 text-white flex flex-col md:flex-row justify-between items-center shadow-md">
-        <span class="text-2xl font-bold mb-4 md:mb-0">WebMonitor</span>
+        <span class="text-2xl font-bold mb-4 md:mb-0">ServiceMonitor</span>
         <div class="flex flex-wrap justify-center gap-3">
             <a href="{% url 'dashboard' userId %}" class="px-4 py-2 rounded hover:bg-blue-500 transition">Dashboard</a>
             <a href="{% url 'alert_status' userId %}" class="px-4 py-2 rounded hover:bg-blue-500 transition">Alerts</a>
@@ -64,7 +64,7 @@
     
     <!-- Footer -->
     <footer class="bg-blue-600 text-white text-center p-4 shadow-md mt-auto">
-        © 2025 WebMonitor - All Rights Reserved
+        © 2025 ServiceMonitor - All Rights Reserved
     </footer>
 
 </body>

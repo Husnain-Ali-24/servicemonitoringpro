@@ -17,23 +17,28 @@
             <div class="relative">
                 <input type="url" name="website_url" id="website_url" required
                     class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder=" ">
-                <label for="website_url"
-                    class="absolute left-3 top-3 text-gray-400 text-sm transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-500 peer-focus:top-3 peer-focus:text-sm peer-focus:text-blue-500">
-                    Website URL
-                </label>
+                    placeholder="Website URL">
             </div>
-
+        
+            <div class="relative">
+                <input type="number" name="interval" id="interval" required min="1" value="60"
+                    class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="Check Interval (e.g., 120 for 2 min)">
+                <p class="text-gray-500 text-sm mt-1">Default: 60 seconds (1 minute)</p>
+            </div>
+        
             <button type="submit"
                 class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
                 Add Website
             </button>
         </form>
+        
 
         <div class="text-center mt-4">
             <a href="{% url 'dashboard' userId %}" class="text-blue-500 hover:underline">Back to Dashboard</a>
         </div>
     </div>
+    
 
 </body>
 </html>

@@ -6,6 +6,7 @@ class Website(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     url = models.URLField(unique=True)
     status = models.CharField(max_length=10, default="UNKNOWN")
+    interval=models.IntegerField(default=5)
     last_checked = models.DateTimeField(auto_now=True)
 
     def __str__(self):

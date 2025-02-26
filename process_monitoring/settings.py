@@ -162,3 +162,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+TIME_ZONE = 'Asia/Karachi'  # Change this to your local time zone
+USE_TZ = True
