@@ -10,45 +10,44 @@ from django.utils.timezone import now
 
 logger = logging.getLogger(__name__)
 
-@shared_task
-def check_website_status():
-    websites = Website.objects.all()
-    logger.info(f"Found {websites.count()} websites to check")  # Debugging line
-    
+def check_websites(interval):
+    websites = Website.objects.filter(interval=interval)
+    logger.info(f"Checking {websites.count()} websites for {interval}-second interval")
+
     for website in websites:
-        time_since_last_check = (now() - website.last_checked).total_seconds()
-        if time_since_last_check >= website.interval:
-            try:
-                logger.info(f"Checking {website.url}")  # Debugging line
-                response = requests.get(website.url, timeout=5)
-                new_status=""
-                if response.status_code in [502, 503, 504]:
-                    new_status="DOWN"
-                else:
-                    new_status="UP"
-            except requests.exceptions.ConnectionError:
-                new_status="DOWN"
-            except requests.exceptions.Timeout:
-                new_status="DOWN"
-            except requests.exceptions.RequestException:
-                new_status="DOWN"
+        try:
+            response = requests.get(website.url, timeout=5)
+            new_status = "DOWN" if response.status_code in [502, 503, 504] else "UP"
+        except requests.exceptions.RequestException:
+            new_status = "DOWN"
 
-            # Check if status changed to DOWN
-            
-            if website.status != new_status and new_status == "DOWN":
-                
-                send_alert_email(website.url,website.user.email)
-                alert_messages(website.url,website.user,new_status)
+        # Alert user if status changes
+        if website.status != new_status:
+            alert_messages(website.url, website.user, new_status)
+            if new_status == "DOWN":
+                send_alert_email(website.url, website.user.email)
 
-            if website.status != new_status and new_status == "UP":
-                alert_messages_up(website.url,website.user,new_status)
+        website.status = new_status
+        website.last_checked = now()
+        website.save()
 
-            # Update status in the database
-            website.status = new_status
-            website.save()
-            logger.info(f"Checked {website.url}: {website.status}")
+    return f"Checked {websites.count()} websites for {interval}-second interval"
 
-    return "Website Server Status Checked"
+@shared_task
+def check_10_sec():
+    return check_websites(10)
+
+@shared_task
+def check_1_min():
+    return check_websites(60)
+
+@shared_task
+def check_2_min():
+    return check_websites(120)
+
+@shared_task
+def check_5_min():
+    return check_websites(300)
 
 def alert_messages(website_url,website_user,new_status):
     alert=Alert.objects.create(
