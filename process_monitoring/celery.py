@@ -2,7 +2,6 @@ import os
 from celery import Celery
 from celery.schedules import crontab
 from datetime import timedelta
-from celery.schedules import schedule
 
 # Set Django settings for Celery
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "process_monitoring.settings")
@@ -20,8 +19,20 @@ app.autodiscover_tasks()
 
 # Define periodic tasks using Celery Beat
 app.conf.beat_schedule = {
-    'check-websites-dynamically': {
-        'task': 'monitoring.tasks.check_website_status',
-        'schedule': schedule(timedelta(seconds=60)),  # ✅ Runs every 1 minute
+    'check-websites-every-10-sec': {
+        'task': 'monitoring.tasks.check_10_sec',
+        'schedule': timedelta(seconds=10),
+    },
+    'check-websites-every-1-min': {
+        'task': 'monitoring.tasks.check_1_min',
+        'schedule': timedelta(minutes=1),
+    },
+    'check-websites-every-2-min': {
+        'task': 'monitoring.tasks.check_2_min',
+        'schedule': timedelta(minutes=2),
+    },
+    'check-websites-every-5-min': {
+        'task': 'monitoring.tasks.check_5_min',
+        'schedule': timedelta(minutes=5),
     },
 }

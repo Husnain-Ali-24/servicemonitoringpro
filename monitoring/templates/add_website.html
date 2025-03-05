@@ -15,16 +15,22 @@
             {% csrf_token %}
             
             <div class="relative">
+                <label for="website_url" class="block text-gray-700 font-medium mb-1">Website URL</label>
                 <input type="url" name="website_url" id="website_url" required
                     class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Website URL">
+                    placeholder="Enter website URL">
             </div>
         
             <div class="relative">
-                <input type="number" name="interval" id="interval" required min="1" value="60"
-                    class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Check Interval (e.g., 120 for 2 min)">
-                <p class="text-gray-500 text-sm mt-1">Default: 60 seconds (1 minute)</p>
+                <label for="interval" class="block text-gray-700 font-medium mb-1">Check Interval</label>
+                <select name="interval" id="interval" required
+                    class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <option value="10">Every 10 sec</option>
+                    <option value="60" selected>Every 1 min</option>
+                    <option value="120">Every 2 min</option>
+                    <option value="300">Every 5 min</option>
+                </select>
+                <p class="text-gray-500 text-sm mt-1">Choose how frequently the website should be monitored.</p>
             </div>
         
             <button type="submit"
@@ -38,7 +44,6 @@
             <a href="{% url 'dashboard' userId %}" class="text-blue-500 hover:underline">Back to Dashboard</a>
         </div>
     </div>
-    
 
 </body>
 </html>
