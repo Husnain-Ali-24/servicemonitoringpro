@@ -1,4 +1,4 @@
-​# Service Monitoring Pro
+​## Service Monitoring Pro
 
 Service Monitoring Pro is a web application designed to monitor the availability and performance of websites and servers. Users can register, log in, and add URLs to monitor, selecting specific intervals and monitoring types. The application checks the status of the specified services at the chosen intervals and notifies users via email if any service becomes unavailable. An alert dashboard provides a centralized view of all alerts.
 
