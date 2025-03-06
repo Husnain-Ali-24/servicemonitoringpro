@@ -26,6 +26,7 @@ gevent==24.11.1
 greenlet==3.1.1
 idna==3.10
 kombu==5.4.2
+ping3==4.0.8
 prompt_toolkit==3.0.50
 psycopg2-binary==2.9.10
 pycparser==2.22
