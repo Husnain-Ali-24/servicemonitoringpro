@@ -19,9 +19,9 @@ app.autodiscover_tasks()
 
 # Define periodic tasks using Celery Beat
 app.conf.beat_schedule = {
-    'check-websites-every-10-sec': {
-        'task': 'monitoring.tasks.check_10_sec',
-        'schedule': timedelta(seconds=10),
+    'check-websites-every-30-sec': {
+        'task': 'monitoring.tasks.check_30_sec',
+        'schedule': timedelta(seconds=30),
     },
     'check-websites-every-1-min': {
         'task': 'monitoring.tasks.check_1_min',
