@@ -14,6 +14,7 @@
         <form method="POST" action="{% url 'add_website' userId %}" class="space-y-4">
             {% csrf_token %}
             
+            <!-- Website URL -->
             <div class="relative">
                 <label for="website_url" class="block text-gray-700 font-medium mb-1">Website URL</label>
                 <input type="url" name="website_url" id="website_url" required
@@ -21,11 +22,24 @@
                     placeholder="Enter website URL">
             </div>
         
+            <!-- Monitoring Type -->
+            <div class="relative">
+                <label for="monitoring_type" class="block text-gray-700 font-medium mb-1">Monitoring Type</label>
+                <select name="monitoring_type" id="monitoring_type" required
+                    class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <option value="server" selected>Only Server Service</option>
+                    <option value="website">Only Website Service</option>
+                    <option value="both">Both Website & Server</option>
+                </select>
+                <p class="text-gray-500 text-sm mt-1">Choose what you want to monitor.</p>
+            </div>
+
+            <!-- Check Interval -->
             <div class="relative">
                 <label for="interval" class="block text-gray-700 font-medium mb-1">Check Interval</label>
                 <select name="interval" id="interval" required
                     class="peer w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    <option value="10">Every 10 sec</option>
+                    <option value="30">Every 30 sec</option>
                     <option value="60" selected>Every 1 min</option>
                     <option value="120">Every 2 min</option>
                     <option value="300">Every 5 min</option>
@@ -38,7 +52,6 @@
                 Add Website
             </button>
         </form>
-        
 
         <div class="text-center mt-4">
             <a href="{% url 'dashboard' userId %}" class="text-blue-500 hover:underline">Back to Dashboard</a>
